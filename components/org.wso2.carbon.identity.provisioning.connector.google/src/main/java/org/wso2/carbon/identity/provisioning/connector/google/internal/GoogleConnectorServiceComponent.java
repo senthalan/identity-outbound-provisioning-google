@@ -15,7 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.wso2.carbon.identity.provisioning.connector.google.internal;
 
 import org.apache.commons.logging.Log;
@@ -23,31 +22,28 @@ import org.apache.commons.logging.LogFactory;
 import org.osgi.service.component.ComponentContext;
 import org.wso2.carbon.identity.provisioning.AbstractProvisioningConnectorFactory;
 import org.wso2.carbon.identity.provisioning.connector.google.GoogleProvisioningConnectorFactory;
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicy;
 
-//TODO : Add dependency to IdP MetadataService
-
-/**
- * @scr.component name=
- * "org.wso2.carbon.identity.provisioning.google.internal.GoogleConnectorServiceComponent"
- * immediate="true"
- */
+@Component(
+         name = "org.wso2.carbon.identity.provisioning.google.internal.GoogleConnectorServiceComponent", 
+         immediate = true)
 public class GoogleConnectorServiceComponent {
 
-    private static Log log = LogFactory
-            .getLog(GoogleConnectorServiceComponent.class);
+    private static Log log = LogFactory.getLog(GoogleConnectorServiceComponent.class);
 
+    @Activate
     protected void activate(ComponentContext context) {
-
         if (log.isDebugEnabled()) {
             log.debug("Activating GoogleConnectorServiceComponent");
         }
-
         try {
-            GoogleProvisioningConnectorFactory googleProvisioningConnectorFactory = new
-                    GoogleProvisioningConnectorFactory();
-
-            context.getBundleContext().registerService(AbstractProvisioningConnectorFactory.class.getName(),
-                                                       googleProvisioningConnectorFactory, null);
+            GoogleProvisioningConnectorFactory googleProvisioningConnectorFactory = new GoogleProvisioningConnectorFactory();
+            context.getBundleContext().registerService(AbstractProvisioningConnectorFactory.class.getName(), googleProvisioningConnectorFactory, null);
             if (log.isDebugEnabled()) {
                 log.debug("Google Identity Provisioning Connector bundle is activated");
             }
@@ -55,5 +51,5 @@ public class GoogleConnectorServiceComponent {
             log.error("Error while activating Google Identity Provisioning Connector", e);
         }
     }
-
 }
+
